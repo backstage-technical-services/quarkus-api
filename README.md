@@ -1,7 +1,7 @@
 # API
 
-[![pipeline status](https://gitlab.com/backstage-technical-services/website/quarkus-api/badges/v1.0-dev/pipeline.svg)](https://gitlab.com/backstage-technical-services/website/quarkus-api/-/commits/master)
-[![coverage report](https://gitlab.com/backstage-technical-services/website/quarkus-api/badges/v1.0-dev/coverage.svg)](https://gitlab.com/backstage-technical-services/website/quarkus-api/-/commits/master)
+[![pipeline status](https://gitlab.com/backstage-technical-services/website/quarkus-api/badges/master/pipeline.svg)](https://gitlab.com/backstage-technical-services/website/quarkus-api/-/commits/master)
+[![coverage report](https://gitlab.com/backstage-technical-services/website/quarkus-api/badges/master/coverage.svg)](https://gitlab.com/backstage-technical-services/website/quarkus-api/-/commits/master)
 [![chat](https://img.shields.io/badge/chat-on%20slack-brightgreen)](https://bts-website.slack.com)
 [![license](https://img.shields.io/badge/license-Apache%20v2-blue)](./LICENSE.md)
 
