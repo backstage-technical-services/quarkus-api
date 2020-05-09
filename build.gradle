@@ -1,0 +1,111 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+    id "org.jetbrains.kotlin.plugin.allopen" version "${kotlinVersion}"
+    id "org.jetbrains.kotlin.plugin.jpa" version "${kotlinVersion}"
+    id "io.quarkus"
+    id "jacoco"
+}
+
+apply plugin: "io.quarkus"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+
+    // Kotlin
+    implementation "io.quarkus:quarkus-kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
+
+    // Config
+    implementation "io.quarkus:quarkus-config-yaml"
+    implementation "io.quarkus:quarkus-smallrye-openapi"
+
+    // Web
+    implementation "io.quarkus:quarkus-vertx-web"
+    implementation "io.quarkus:quarkus-resteasy"
+
+    // JSON
+    implementation "io.quarkus:quarkus-resteasy-jackson"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+
+    // Validation
+    implementation "javax.validation:validation-api:2.0.1.Final"
+    implementation "org.valiktor:valiktor-core:${valiktorVersion}"
+    implementation "org.valiktor:valiktor-javatime:${valiktorVersion}"
+
+    // Mail
+    implementation "io.quarkus:quarkus-mailer"
+
+    // Data
+    implementation "io.quarkus:quarkus-hibernate-orm-panache"
+    implementation "io.quarkus:quarkus-jdbc-postgresql"
+
+    // Auth
+//    implementation "io.quarkus:quarkus-keycloak-authorization"
+//    implementation "io.quarkus:quarkus-oidc"
+
+    // Monitoring
+    implementation "io.quarkus:quarkus-smallrye-health"
+
+    // Testing
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.2"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion"
+    testImplementation "io.quarkus:quarkus-junit5"
+    testImplementation "io.quarkus:quarkus-test-h2"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.kotest:kotest-runner-junit5-jvm:$kotestVersion"
+    testImplementation "io.kotest:kotest-assertions-core-jvm:$kotestVersion"
+    testImplementation "io.kotest:kotest-assertions-json:$kotestVersion"
+    testImplementation "io.kotest:kotest-property-jvm:$kotestVersion"
+    testImplementation "org.mockito:mockito-core:3.24"
+}
+
+group "org.backstage"
+version "1.0.0-SNAPSHOT"
+
+quarkus {
+    setOutputDirectory("$projectDir/build/classes/kotlin/main")
+}
+
+quarkusDev {
+    setSourceDir("$projectDir/src/main/kotlin")
+}
+
+allOpen {
+    annotation("javax.ws.rs.Path")
+    annotation("javax.enterprise.context.ApplicationScoped")
+    annotation("javax.persistence.Entity")
+    annotation("io.quarkus.test.junit.QuarkusTest")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_11
+    kotlinOptions.javaParameters = true
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_11
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled true
+    }
+}

@@ -1,0 +1,33 @@
+test:
+  extends: .gradle
+  stage: test
+  needs:
+    - build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
+  script:
+    - ./gradlew test
+    - ./gradlew jacocoTestReport
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' build/reports/jacoco/test/jacocoTestReport.csv
+  coverage: '/\d+.\d+ \% covered/'
+  artifacts:
+    reports:
+      junit: build/test-results/test/TEST-*.xml
+
+test-docker-image:
+  extends: .docker
+  stage: test
+  needs:
+    - build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+  script:
+    - scripts/build_image.sh 1> /dev/null
+    - scripts/test_container.sh

@@ -1,0 +1,11 @@
+openapi: 3.0.1
+
+info:
+  title: Backstage Technical Services - API
+  version: 0.0.1a
+
+servers:
+  - url: https://api.staging.bts-crew.com
+    description: Staging server
+  - url: https://api.bts-crew.com
+    description: Production server
