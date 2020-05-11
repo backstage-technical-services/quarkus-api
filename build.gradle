@@ -51,8 +51,7 @@ dependencies {
     implementation "io.quarkus:quarkus-jdbc-postgresql"
 
     // Auth
-//    implementation "io.quarkus:quarkus-keycloak-authorization"
-//    implementation "io.quarkus:quarkus-oidc"
+    implementation "io.quarkus:quarkus-keycloak-authorization"
 
     // Monitoring
     implementation "io.quarkus:quarkus-smallrye-health"

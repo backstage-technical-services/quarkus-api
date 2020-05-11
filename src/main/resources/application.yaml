@@ -12,14 +12,14 @@ quarkus:
     driver: org.postgresql.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-#  oidc:
-#    auth-server-url: ${KEYCLOAK_SERVER}/auth/realms/${KEYCLOAK_REALM}
-#    client-id: ${KEYCLOAK_CLIENT_ID}
-#    credentials:
-#      secret: ${KEYCLOAK_CLIENT_SECRET}
-#  keycloak:
-#    policy-enforcer:
-#      enable: true
+  oidc:
+    auth-server-url: https://keycloak.bts-crew.com/auth/realms/production
+    client-id: ${KEYCLOAK_CLIENT_ID}
+    credentials:
+      secret: ${KEYCLOAK_CLIENT_SECRET}
+  keycloak:
+    policy-enforcer:
+      enable: false
 
 # Dev profile
 "%dev":
@@ -36,11 +36,11 @@ quarkus:
         generation: drop-and-create
     swagger-ui:
       path: /docs
-#    oidc:
-#      auth-server-url: ${KEYCLOAK_SERVER:http://localhost:6023}/auth/realms/${KEYCLOAK_REALM:backstage}
-#      client-id: ${KEYCLOAK_CLIENT_ID:site-api}
-#      credentials:
-#        secret: ${KEYCLOAK_CLIENT_SECRET}
+    oidc:
+      auth-server-url: https://keycloak.bts-crew.com/auth/realms/staging
+      client-id: ${KEYCLOAK_CLIENT_ID:site-api}
+      credentials:
+        secret: ${KEYCLOAK_CLIENT_SECRET}
 
 # Test profile
 "%test":
@@ -50,9 +50,9 @@ quarkus:
       driver: org.h2.Driver
       username: sa
       password:
-#    oidc:
-#      enabled: false
-#      auth-server-url:
-#      client-id:
-#      credentials:
-#        secret:
+    oidc:
+      enabled: false
+      auth-server-url: http://localhost:8080
+      client-id: none
+      credentials:
+        secret: none
