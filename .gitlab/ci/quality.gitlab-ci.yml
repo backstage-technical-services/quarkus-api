@@ -1,6 +1,6 @@
-sonarcloud:
+sonar:
   extends: .gradle
-  stage: sonarqube
+  stage: quality
   needs:
     - test
     - test-docker-image
