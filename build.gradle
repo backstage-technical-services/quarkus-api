@@ -109,6 +109,7 @@ sonarqube {
     properties {
         property "sonar.organization", "${sonarqubeOrganization}"
         property "sonar.projectKey", "${sonarqubeProjectKey}"
+        property "sonar.projectName", "${sonarqubeProjectName}"
     }
 }
 
