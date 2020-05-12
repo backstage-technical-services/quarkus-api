@@ -2,8 +2,7 @@ build-image:
   extends: .docker
   stage: deploy
   needs:
-    - test
-    - test-docker-image
+    - sonarcloud
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
