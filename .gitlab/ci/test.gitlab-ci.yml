@@ -11,12 +11,26 @@ test:
       - .gradle
   script:
     - ./gradlew test
-    - ./gradlew jacocoTestReport
     - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' build/reports/jacoco/test/jacocoTestReport.csv
   coverage: '/\d+.\d+ \% covered/'
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
+
+sonarcloud-check:
+  extends: .gradle
+  stage: test
+  needs:
+    - build
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+  script: ./gradlew sonarqube
 
 test-docker-image:
   extends: .docker

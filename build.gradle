@@ -2,6 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
     id "org.jetbrains.kotlin.plugin.allopen" version "${kotlinVersion}"
     id "org.jetbrains.kotlin.plugin.jpa" version "${kotlinVersion}"
+    id "org.sonarqube" version "${sonarqubeVersion}"
     id "io.quarkus"
     id "jacoco"
 }
@@ -101,11 +102,19 @@ compileTestKotlin {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+sonarqube {
+    properties {
+        property "sonar.organization", "${sonarqubeOrganization}"
+        property "sonar.projectKey", "${sonarqubeProjectKey}"
+    }
 }
 
 jacocoTestReport {
     reports {
-        xml.enabled false
+        xml.enabled true
         csv.enabled true
     }
 }
