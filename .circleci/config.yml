@@ -1,0 +1,129 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@3.4.2
+
+executors:
+  docker-executor:
+    docker:
+      - image: circleci/node:lts
+  graal-executor:
+    docker:
+      - image: oracle/graalvm-ce:19.3.1-java11
+    environment:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+
+jobs:
+  build:
+    executor: graal-executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+      - run:
+          name: Build app
+          command: ./gradlew assemble
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - "*"
+
+  test:
+    executor: graal-executor
+    steps:
+      - attach_workspace:
+          at: "."
+      - run:
+          name: Test
+          command: ./gradlew test
+      - run:
+          name: Determine coverage
+          command: awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' build/reports/jacoco/test/jacocoTestReport.csv
+      - store_artifacts:
+          path: build/reports/jacoco/test
+          destination: test-coverage
+      - store_artifacts:
+          path: build/reports/tests/test
+          destination: tests
+      - store_test_results:
+          path: build/test-results/test
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - "build/reports"
+            - "build/test-results"
+
+  test-container:
+    executor: docker-executor
+    steps:
+      - attach_workspace:
+          at: "."
+      - setup_remote_docker
+      - run:
+          name: Build image
+          command: scripts/build_image.sh
+      - run:
+          name: Test image
+          command: scripts/test_container.sh
+
+  sonarcloud:
+    executor: graal-executor
+    steps:
+      - attach_workspace:
+          at: "."
+      - run:
+          name: SonarCloud
+          command: ./gradlew sonarqube
+
+  deploy:
+    executor: docker-executor
+    steps:
+      - attach_workspace:
+          at: "."
+      - setup_remote_docker
+      - run:
+          name: Build image
+          command: scripts/build_image.sh
+      - run:
+          name: Push image
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login $DOCKER_REGISTRY_URL -u $DOCKER_USERNAME --password-stdin
+            docker tag api:latest $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_IMAGE:$CIRCLE_SHA1
+            docker push $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_IMAGE
+      - slack/status:
+          fail_only: true
+          failure_message: "*API:* Deployment failed."
+          include_job_number_field: false
+          include_project_field: false
+
+workflows:
+  version: 2
+
+  build:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - test-container:
+          requires:
+            - build
+      - sonarcloud:
+          context: SonarCloud
+          requires:
+            - test
+      - deploy:
+          context: Docker
+          requires:
+            - sonarcloud
+            - test-container
+          filters:
+            branches:
+              only:
+                - master

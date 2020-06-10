@@ -107,6 +107,7 @@ test {
 
 sonarqube {
     properties {
+        property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.organization", "${sonarqubeOrganization}"
         property "sonar.projectKey", "${sonarqubeProjectKey}"
         property "sonar.projectName", "${sonarqubeProjectName}"

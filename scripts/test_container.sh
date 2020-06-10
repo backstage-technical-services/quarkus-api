@@ -11,7 +11,7 @@ do
     health=$(docker inspect --format='{{.State.Health.Status}}' api-test)
     echo "Health = $health"
 
-    if [[ "${health}" = "healthy" ]]; then
+    if [ "${health}" = "healthy" ]; then
         docker stop api-test &> /dev/null
         exit 0
     fi
