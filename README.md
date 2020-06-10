@@ -1,12 +1,12 @@
 # API
 
-[![pipeline status](https://gitlab.com/backstage-technical-services/website/quarkus-api/badges/master/pipeline.svg)](https://gitlab.com/backstage-technical-services/website/quarkus-api/-/commits/master)
+[![CircleCI](https://circleci.com/gh/backstage-technical-services/quarkus-api.svg?style=shield)](https://circleci.com/gh/backstage-technical-services/quarkus-api)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=backstage-technical-services_quarkus-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=backstage-technical-services_quarkus-api)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=backstage-technical-services_quarkus-api&metric=coverage)](https://sonarcloud.io/dashboard?id=backstage-technical-services_quarkus-api)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=backstage-technical-services_quarkus-api&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=backstage-technical-services_quarkus-api)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=backstage-technical-services_quarkus-api&metric=sqale_index)](https://sonarcloud.io/dashboard?id=backstage-technical-services_quarkus-api)
 [![chat](https://img.shields.io/badge/chat-on%20slack-brightgreen)](https://bts-website.slack.com)
-[![license](https://img.shields.io/badge/license-Apache%20v2-blue)](./LICENSE.md)
+[![license](https://img.shields.io/badge/license-Apache%20v2-blue)](./LICENSE.txt)
 
 
 ## Pre-requisites
