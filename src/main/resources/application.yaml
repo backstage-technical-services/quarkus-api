@@ -13,7 +13,7 @@ quarkus:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   oidc:
-    auth-server-url: https://keycloak.bts-crew.com/auth/realms/production
+    auth-server-url: https://keycloak.bts-crew.com/auth/realms/${KEYCLOAK_REALM}
     client-id: ${KEYCLOAK_CLIENT_ID}
     credentials:
       secret: ${KEYCLOAK_CLIENT_SECRET}
@@ -37,6 +37,7 @@ quarkus:
     swagger-ui:
       path: /docs
     oidc:
+      enabled: ${AUTH_ENABLED:true}
       auth-server-url: https://keycloak.bts-crew.com/auth/realms/staging
       client-id: ${KEYCLOAK_CLIENT_ID:site-api}
       credentials:

@@ -26,3 +26,5 @@ interface SimpleCrudService<C, U> {
 
     fun delete(id: Long)
 }
+
+enum class CrudOperations { CREATE, VIEW, UPDATE, DELETE }
