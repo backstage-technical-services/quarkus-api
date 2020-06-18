@@ -41,14 +41,6 @@
   > It's often a good idea to ensure that your tests are clean, in which
   > case you can use the `clean test` tasks rather than just `test`.
 
-## Running the API
-
-* To run the API select the correct run configuration and click the
-  "Start" button
-* To stop the API click the "Stop" button
-* If you make changes to the code, restart the API by clicking the "Run"
-  button to re-run it (you can also Stop and Start)
-
 ## Debugging
 
 * To enable debugging you will need to add another run configuration,
