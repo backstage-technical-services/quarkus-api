@@ -17,6 +17,8 @@ repositories {
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}") {
         exclude group: "org.jetbrains.kotlin"
+        exclude group: "com.fasterxml.jackson.module"
+        exclude group: "com.fasterxml.jackson.datatype"
     }
 
     // Kotlin
@@ -65,7 +67,7 @@ dependencies {
     testImplementation "io.kotest:kotest-assertions-core-jvm:$kotestVersion"
     testImplementation "io.kotest:kotest-assertions-json:$kotestVersion"
     testImplementation "io.kotest:kotest-property-jvm:$kotestVersion"
-    testImplementation "org.mockito:mockito-core:3.24"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoVersion"
 }
 
 group "org.backstage"
