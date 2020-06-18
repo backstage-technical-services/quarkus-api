@@ -17,6 +17,8 @@ repositories {
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}") {
         exclude group: "org.jetbrains.kotlin"
+        exclude group: "com.fasterxml.jackson.module"
+        exclude group: "com.fasterxml.jackson.datatype"
     }
 
     // Kotlin
