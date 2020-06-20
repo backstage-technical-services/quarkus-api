@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.mock
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
@@ -139,11 +140,8 @@ class UserIdTests : FunSpec() {
                 on { principal } doReturn BasicUserPrincipal("USERNAME")
             }
 
-            test("getting the user ID should throw an exception") {
-                val exception = shouldThrow<IllegalArgumentException> {
-                    user.getUserId()
-                }
-                exception.message shouldStartWith "Cannot get ID for principle"
+            test("getting the user ID should return null") {
+                user.getUserId().shouldBeNull()
             }
         }
     }

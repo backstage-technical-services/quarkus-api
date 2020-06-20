@@ -108,7 +108,7 @@ abstract class Policy<T> {
     }
 }
 
-fun SecurityIdentity.getUserId(): String = when (val principal = this.principal) {
+fun SecurityIdentity.getUserId(): String? = when (val principal = this.principal) {
     is OidcJwtCallerPrincipal -> principal.subject
-    else -> throw IllegalArgumentException("Cannot get ID for principle of class ${principal::class.java}")
+    else -> null
 }
