@@ -60,7 +60,8 @@ jobs:
             - "build/test-results"
 
   test-container:
-    executor: graal-executor
+    docker:
+      - image: circleci/openjdk:11
     steps:
       - attach_workspace:
           at: "."
