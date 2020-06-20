@@ -38,7 +38,7 @@ quarkus:
       path: /docs
     oidc:
       enabled: ${AUTH_ENABLED:true}
-      auth-server-url: https://keycloak.bts-crew.com/auth/realms/staging
+      auth-server-url: https://keycloak.bts-crew.com/auth/realms/nonprod
       client-id: ${KEYCLOAK_CLIENT_ID:site-api}
       credentials:
         secret: ${KEYCLOAK_CLIENT_SECRET}
