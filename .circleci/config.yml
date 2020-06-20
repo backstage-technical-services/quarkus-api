@@ -60,14 +60,16 @@ jobs:
             - "build/test-results"
 
   test-container:
-    executor: docker-executor
+    executor: graal-executor
     steps:
       - attach_workspace:
           at: "."
       - setup_remote_docker
       - run:
           name: Build image
-          command: scripts/build_image.sh
+          command: |
+            ./gradlew assemble -Dquarkus.oidc.enabled=false
+            scripts/build_image.sh
       - run:
           name: Test image
           command: scripts/test_container.sh
