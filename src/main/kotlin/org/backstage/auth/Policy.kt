@@ -87,7 +87,7 @@ abstract class Policy<T> {
      */
     fun SecurityIdentity.isAuthor(entity: T?, fn: (entity: T) -> Any) = when (entity) {
         null -> false
-        else -> fn(entity) == this.getUserId()
+        else -> fn(entity).toString() == this.getUserId()
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class Policy<T> {
      */
     fun SecurityIdentity.isAuthor(entity: HasAuthor?) = when (entity) {
         null -> false
-        else -> entity.authorId == this.getUserId()
+        else -> entity.authorId.toString() == this.getUserId()
     }
 
     fun SecurityIdentity.isMember() = this.hasRole(ROLE_MEMBER)
@@ -108,7 +108,7 @@ abstract class Policy<T> {
     }
 }
 
-fun SecurityIdentity.getUserId(): Any = when (val principal = this.principal) {
+fun SecurityIdentity.getUserId(): String = when (val principal = this.principal) {
     is OidcJwtCallerPrincipal -> principal.subject
-    else -> IllegalArgumentException("Cannot get ID for principle of class ${principal::class.java}")
+    else -> throw IllegalArgumentException("Cannot get ID for principle of class ${principal::class.java}")
 }
