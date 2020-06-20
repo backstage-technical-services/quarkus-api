@@ -91,7 +91,8 @@ abstract class Policy<T> {
     }
 
     /**
-     * Determines whether the current [SecurityIdentity] is the author of a given [entity].
+     * If the given [entity] implements the [HasAuthor] interface this methods offers an alternative way to determine
+     * whether the current [SecurityIdentity] is the author, using the [HasAuthor.authorId] property.
      */
     fun SecurityIdentity.isAuthor(entity: HasAuthor?) = when (entity) {
         null -> false
