@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation enforcedPlatform("io.quarkus:quarkus-universe-bom:1.5.1.Final") {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}") {
         exclude group: "org.jetbrains.kotlin"
         exclude group: "com.fasterxml.jackson.module"
         exclude group: "com.fasterxml.jackson.datatype"
