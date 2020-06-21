@@ -15,11 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}") {
-        exclude group: "org.jetbrains.kotlin"
-        exclude group: "com.fasterxml.jackson.module"
-        exclude group: "com.fasterxml.jackson.datatype"
-    }
+    implementation platform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
 
     // Kotlin
     implementation "io.quarkus:quarkus-kotlin"
@@ -49,6 +45,7 @@ dependencies {
     // Data
     implementation "io.quarkus:quarkus-hibernate-orm-panache"
     implementation "io.quarkus:quarkus-jdbc-postgresql"
+    implementation "org.postgresql:postgresql:42.2.+"
 
     // Auth
     implementation "io.quarkus:quarkus-keycloak-authorization"
@@ -61,6 +58,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit5:${kotlinVersion}"
     testImplementation "io.quarkus:quarkus-junit5"
     testImplementation "io.quarkus:quarkus-test-h2"
+    testImplementation "com.h2database:h2:1.4.200"
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.kotest:kotest-runner-junit5-jvm:${kotestVersion}"
     testImplementation "io.kotest:kotest-assertions-core-jvm:${kotestVersion}"
