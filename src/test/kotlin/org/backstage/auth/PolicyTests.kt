@@ -8,12 +8,11 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.string.shouldStartWith
 import io.quarkus.hibernate.orm.panache.PanacheEntity
-import io.quarkus.launcher.shaded.org.apache.http.auth.BasicUserPrincipal
 import io.quarkus.oidc.runtime.OidcJwtCallerPrincipal
 import io.quarkus.security.UnauthorizedException
 import io.quarkus.security.identity.SecurityIdentity
+import io.quarkus.security.runtime.QuarkusPrincipal
 import io.quarkus.test.junit.QuarkusTest
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -137,7 +136,7 @@ class UserIdTests : FunSpec() {
 
         context("a basic user principle") {
             val user = mock<SecurityIdentity> {
-                on { principal } doReturn BasicUserPrincipal("USERNAME")
+                on { principal } doReturn QuarkusPrincipal("USERNAME")
             }
 
             test("getting the user ID should return null") {

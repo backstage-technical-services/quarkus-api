@@ -24,7 +24,7 @@ Include a link to the original ticket.
 
 **Deployment**
 
-* [ ] GitLab CI/CD config updated
+* [ ] CI/CD config updated
 * [ ] Docker image builds and boots
 
 **Principles**
