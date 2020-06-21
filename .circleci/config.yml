@@ -84,7 +84,7 @@ jobs:
       - attach_workspace:
           at: "."
       - snyk/scan:
-          additional-arguments: '--configuration-attributes=buildtype:release,usage:java-runtime'
+          additional-arguments: '--configuration-attributes=usage:java-runtime'
           project: '${CIRCLE_PROJECT_REPONAME}'
           severity-threshold: high
 
