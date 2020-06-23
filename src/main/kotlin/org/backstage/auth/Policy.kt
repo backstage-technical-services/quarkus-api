@@ -87,7 +87,7 @@ abstract class Policy<T> {
      */
     fun SecurityIdentity.isAuthor(entity: T?, fn: (entity: T) -> Any) = when (entity) {
         null -> false
-        else -> fn(entity).toString() == this.getUserId()
+        else -> fn(entity).toString() == this.getUserIdOrNull()
     }
 
     /**
@@ -96,7 +96,7 @@ abstract class Policy<T> {
      */
     fun SecurityIdentity.isAuthor(entity: HasAuthor?) = when (entity) {
         null -> false
-        else -> entity.authorId.toString() == this.getUserId()
+        else -> entity.authorId.toString() == this.getUserIdOrNull()
     }
 
     fun SecurityIdentity.isMember() = this.hasRole(ROLE_MEMBER)
@@ -109,7 +109,10 @@ abstract class Policy<T> {
     }
 }
 
-fun SecurityIdentity.getUserId(): String? = when (val principal = this.principal) {
+fun SecurityIdentity.getUserId(): String = this.getUserIdOrNull()
+    ?: throw IllegalStateException("Could not determine ID of user $this")
+
+fun SecurityIdentity.getUserIdOrNull(): String? = when (val principal = this.principal) {
     is OidcJwtCallerPrincipal -> principal.subject
     else -> null
 }

@@ -130,7 +130,7 @@ class UserIdTests : FunSpec() {
             }
 
             test("getting the user ID should return the correct value") {
-                user.getUserId() shouldBe USER_CORRECT.toString()
+                user.getUserIdOrNull() shouldBe USER_CORRECT.toString()
             }
         }
 
@@ -140,7 +140,7 @@ class UserIdTests : FunSpec() {
             }
 
             test("getting the user ID should return null") {
-                user.getUserId().shouldBeNull()
+                user.getUserIdOrNull().shouldBeNull()
             }
         }
     }
