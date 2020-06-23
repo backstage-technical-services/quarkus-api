@@ -14,6 +14,7 @@ import io.quarkus.security.UnauthorizedException
 import io.quarkus.security.identity.SecurityIdentity
 import io.quarkus.security.runtime.QuarkusPrincipal
 import io.quarkus.test.junit.QuarkusTest
+import org.backstage.AuthHelpers
 import org.junit.jupiter.api.Test
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
@@ -35,12 +36,7 @@ class PolicyInjectionTests {
 
 class SingletonPolicyTests : FunSpec() {
     init {
-        val principle = mock<OidcJwtCallerPrincipal> {
-            on { subject } doReturn USER_CORRECT.toString()
-        }
-        val user = mock<SecurityIdentity> {
-            on { principal } doReturn principle
-        }
+        val user = AuthHelpers.createMockedIdentity(USER_CORRECT.toString())
 
         context("a singleton policy and an entity") {
             val policy = object : Policy<ExampleEntity>() {
