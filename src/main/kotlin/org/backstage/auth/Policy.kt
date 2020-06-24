@@ -60,6 +60,17 @@ abstract class Policy<T> {
     abstract fun authorise(action: Any, entity: T? = null)
 
     /**
+     * Determines whether to authorise a given [action], which may depend on a given [entity], and execute [onAuthorised]
+     * if it is. This method should throw an [UnauthorizedException] if the action is not allowed. If the authorisation
+     * needs to inspect the current user it can use an injected [SecurityIdentity].
+     */
+    inline fun <reified U> authoriseAndDo(action: Any, entity: T? = null, onAuthorised: () -> U): U {
+        authorise(action, entity)
+
+        return onAuthorised()
+    }
+
+    /**
      * Determines whether the current user is authorised based on the result of a given [fn] which takes no arguments.
      * This is useful for determining access for actions with no entity to check, or where the entity does not dictate
      * access permissions.
@@ -100,12 +111,13 @@ abstract class Policy<T> {
     }
 
     fun SecurityIdentity.isMember() = this.hasRole(ROLE_MEMBER)
-    fun SecurityIdentity.isAdmin() = this.hasRole(ROLE_COMMITTEE) || this.hasRole(ROLE_ADMIN)
+    fun SecurityIdentity.isAdmin() = this.hasRole(ROLE_COMMITTEE) || this.hasRole(ROLE_SUPER_ADMIN)
+    fun SecurityIdentity.isSuperAdmin() = this.hasRole(ROLE_SUPER_ADMIN)
 
     companion object {
         private const val ROLE_MEMBER = "ROLE_MEMBER"
         private const val ROLE_COMMITTEE = "ROLE_COMMITTEE"
-        private const val ROLE_ADMIN = "ROLE_ADMIN"
+        private const val ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN"
     }
 }
 
