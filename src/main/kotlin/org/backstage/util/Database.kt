@@ -1,20 +1,26 @@
 package org.backstage.util
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import io.quarkus.security.identity.SecurityIdentity
 import org.backstage.auth.getUserId
 import org.hibernate.envers.DefaultRevisionEntity
 import org.hibernate.envers.RevisionEntity
 import org.hibernate.envers.RevisionListener
+import java.util.*
 import javax.enterprise.inject.spi.CDI
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Table
+import javax.persistence.*
 
-fun <E, I> PanacheRepositoryBase<E, I>.update(entity: E) = persist(entity)
+fun <E : BaseEntity> PanacheRepositoryBase<E, UUID>.update(entity: E) = persist(entity)
 
-fun <E : PanacheEntityBase, I> E.update(repository: PanacheRepositoryBase<E, I>) = repository.update(this)
+fun <E : BaseEntity> E.update(repository: PanacheRepositoryBase<E, UUID>) = repository.update(this)
+
+@MappedSuperclass
+abstract class BaseEntity {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", columnDefinition = "UUID")
+    open lateinit var id: UUID
+}
 
 @Entity
 @Table(name = "revision_info")
