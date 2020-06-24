@@ -1,5 +1,6 @@
 package org.backstage.util
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import io.quarkus.security.identity.SecurityIdentity
 import org.backstage.auth.getUserId
@@ -12,6 +13,8 @@ import javax.persistence.Entity
 import javax.persistence.Table
 
 fun <E, I> PanacheRepositoryBase<E, I>.update(entity: E) = persist(entity)
+
+fun <E : PanacheEntityBase, I> E.update(repository: PanacheRepositoryBase<E, I>) = repository.update(this)
 
 @Entity
 @Table(name = "revision_info")
