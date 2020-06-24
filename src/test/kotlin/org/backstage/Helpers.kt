@@ -6,7 +6,9 @@ import io.quarkus.oidc.runtime.OidcJwtCallerPrincipal
 import io.quarkus.security.identity.SecurityIdentity
 
 object AuthHelpers {
-    fun createMockedIdentity(userId: String = "USER_ID"): SecurityIdentity {
+    const val DEFAULT_USER_ID = "USER_ID"
+
+    fun createMockedIdentity(userId: String = DEFAULT_USER_ID): SecurityIdentity {
         val principle = mock<OidcJwtCallerPrincipal> {
             on { subject } doReturn userId
         }
