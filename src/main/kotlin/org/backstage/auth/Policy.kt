@@ -3,6 +3,9 @@ package org.backstage.auth
 import io.quarkus.oidc.runtime.OidcJwtCallerPrincipal
 import io.quarkus.security.UnauthorizedException
 import io.quarkus.security.identity.SecurityIdentity
+import org.backstage.auth.Roles.ROLE_COMMITTEE
+import org.backstage.auth.Roles.ROLE_MEMBER
+import org.backstage.auth.Roles.ROLE_SUPER_ADMIN
 
 interface HasAuthor {
     val authorId: Any
@@ -45,7 +48,7 @@ interface HasAuthor {
  * }
  * ```
  */
-abstract class Policy<T> {
+abstract class Policy<T>(private val identity: SecurityIdentity) {
     protected fun allow() = Unit
 
     protected fun deny() {
@@ -76,7 +79,7 @@ abstract class Policy<T> {
      * access permissions.
      */
     protected fun authorise(fn: () -> Boolean) {
-        if (!fn()) {
+        if (!identity.isSuperAdmin() && !fn()) {
             deny()
         }
     }
@@ -87,7 +90,7 @@ abstract class Policy<T> {
      * if no [entity] is provided.
      */
     protected fun authorise(entity: T?, fn: (entity: T) -> Boolean) {
-        if (entity == null || !fn(entity)) {
+        if (!identity.isSuperAdmin() && (entity == null || !fn(entity))) {
             deny()
         }
     }
@@ -113,12 +116,6 @@ abstract class Policy<T> {
     fun SecurityIdentity.isMember() = this.hasRole(ROLE_MEMBER)
     fun SecurityIdentity.isAdmin() = this.hasRole(ROLE_COMMITTEE) || this.hasRole(ROLE_SUPER_ADMIN)
     fun SecurityIdentity.isSuperAdmin() = this.hasRole(ROLE_SUPER_ADMIN)
-
-    companion object {
-        private const val ROLE_MEMBER = "ROLE_MEMBER"
-        private const val ROLE_COMMITTEE = "ROLE_COMMITTEE"
-        private const val ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN"
-    }
 }
 
 fun SecurityIdentity.getUserId(): String = this.getUserIdOrNull()
