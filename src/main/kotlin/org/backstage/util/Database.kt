@@ -2,6 +2,7 @@ package org.backstage.util
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import io.quarkus.security.identity.SecurityIdentity
+import org.apache.commons.lang3.StringUtils
 import org.backstage.auth.getUserId
 import org.backstage.error.exceptionWithMessage
 import org.hibernate.envers.DefaultRevisionEntity
@@ -11,9 +12,19 @@ import java.util.*
 import javax.enterprise.inject.spi.CDI
 import javax.persistence.*
 import javax.ws.rs.core.Response
+import kotlin.reflect.KClass
 
-inline fun <reified E : BaseEntity> PanacheRepositoryBase<E, UUID>.find(id: UUID) = findByIdOptional(id)
-    .orElseThrow { Response.Status.NOT_FOUND exceptionWithMessage "Could not find ${E::class.java.simpleName} with ID $id" }
+inline fun <reified E : BaseEntity> KClass<E>.getEntityName(): String =
+    this.java.simpleName
+        .removeSuffix("Entity")
+        .run { StringUtils.splitByCharacterTypeCamelCase(this) }
+        .joinToString(separator = " ")
+        .toLowerCase()
+
+inline fun <reified E : BaseEntity> PanacheRepositoryBase<E, UUID>.findByIdOrThrow(id: UUID): E = findByIdOptional(id)
+    .orElseThrow {
+        Response.Status.NOT_FOUND exceptionWithMessage "Could not find ${E::class.getEntityName()} with ID $id"
+    }
 
 fun <E : BaseEntity> PanacheRepositoryBase<E, UUID>.update(entity: E) = persist(entity)
 
