@@ -3,12 +3,17 @@ package org.backstage.util
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import io.quarkus.security.identity.SecurityIdentity
 import org.backstage.auth.getUserId
+import org.backstage.error.exceptionWithMessage
 import org.hibernate.envers.DefaultRevisionEntity
 import org.hibernate.envers.RevisionEntity
 import org.hibernate.envers.RevisionListener
 import java.util.*
 import javax.enterprise.inject.spi.CDI
 import javax.persistence.*
+import javax.ws.rs.core.Response
+
+inline fun <reified E : BaseEntity> PanacheRepositoryBase<E, UUID>.find(id: UUID) = findByIdOptional(id)
+    .orElseThrow { Response.Status.NOT_FOUND exceptionWithMessage "Could not find ${E::class.java.simpleName} with ID $id" }
 
 fun <E : BaseEntity> PanacheRepositoryBase<E, UUID>.update(entity: E) = persist(entity)
 
@@ -34,7 +39,7 @@ class RevisionInfoEntityListener : RevisionListener {
     private val identity = CDI.current().select(SecurityIdentity::class.java).get()
 
     override fun newRevision(revisionEntity: Any?) {
-        (revisionEntity as? RevisionInfoEntity?)?.apply {
+        (revisionEntity as? RevisionInfoEntity)?.apply {
             userId = identity.getUserId()
         }
     }
