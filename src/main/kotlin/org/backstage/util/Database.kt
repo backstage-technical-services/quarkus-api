@@ -17,7 +17,7 @@ import kotlin.reflect.KClass
 inline fun <reified E : BaseEntity> KClass<E>.formatClassName(): String =
     this.java.simpleName
         .removeSuffix("Entity")
-        .run { StringUtils.splitByCharacterTypeCamelCase(this) }
+        .let(StringUtils::splitByCharacterTypeCamelCase)
         .joinToString(separator = " ")
         .toLowerCase()
 

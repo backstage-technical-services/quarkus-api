@@ -85,6 +85,7 @@ fun AwardEntity.modify(request: AwardRequest.Update) = apply {
     recurring = request.recurring
 }
 
+@Suppress("UNCHECKED_CAST")
 fun <T : Any> AwardEntity.toClass(responseClass: KClass<T>) = when (responseClass) {
     AwardResponse.Full::class -> AwardConverter.toResponse<AwardResponse.Full>(this) as T
     else -> throw IllegalArgumentException("Cannot convert ${AwardEntity::class} to $responseClass")
