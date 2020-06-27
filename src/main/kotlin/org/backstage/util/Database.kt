@@ -14,7 +14,7 @@ import javax.persistence.*
 import javax.ws.rs.core.Response
 import kotlin.reflect.KClass
 
-inline fun <reified E : BaseEntity> KClass<E>.getEntityName(): String =
+inline fun <reified E : BaseEntity> KClass<E>.formatClassName(): String =
     this.java.simpleName
         .removeSuffix("Entity")
         .run { StringUtils.splitByCharacterTypeCamelCase(this) }
@@ -23,7 +23,7 @@ inline fun <reified E : BaseEntity> KClass<E>.getEntityName(): String =
 
 inline fun <reified E : BaseEntity> PanacheRepositoryBase<E, UUID>.findByIdOrThrow(id: UUID): E = findByIdOptional(id)
     .orElseThrow {
-        Response.Status.NOT_FOUND exceptionWithMessage "Could not find ${E::class.getEntityName()} with ID $id"
+        Response.Status.NOT_FOUND exceptionWithMessage "Could not find ${E::class.formatClassName()} with ID $id"
     }
 
 fun <E : BaseEntity> PanacheRepositoryBase<E, UUID>.update(entity: E) = persist(entity)

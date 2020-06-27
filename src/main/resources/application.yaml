@@ -55,6 +55,9 @@ quarkus:
       driver: org.h2.Driver
       username: sa
       password:
+    hibernate-orm:
+      database:
+        generation: create
     oidc:
       enabled: false
       auth-server-url: http://localhost:8080
