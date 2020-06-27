@@ -34,7 +34,7 @@ fun <E : BaseEntity> E.update(repository: PanacheRepositoryBase<E, UUID>) = repo
 abstract class BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name = "id", columnDefinition = "UUID")
+    @Column(name = "id", nullable = false, columnDefinition = "UUID")
     open lateinit var id: UUID
 }
 

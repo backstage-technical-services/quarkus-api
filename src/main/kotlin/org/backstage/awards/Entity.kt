@@ -17,19 +17,19 @@ class AwardRepository : PanacheRepositoryBase<AwardEntity, UUID>
 @Entity
 @Table(name = "awards")
 data class AwardEntity(
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     var name: String,
 
     @Column(name = "description", columnDefinition = "TEXT")
     var description: String?,
 
-    @Column(name = "recurring")
+    @Column(name = "recurring", nullable = false)
     var recurring: Boolean,
 
-    @Column(name = "suggested_by")
+    @Column(name = "suggested_by", nullable = false)
     var suggestedBy: String,
 
-    @Column(name = "approved")
+    @Column(name = "approved", nullable = false)
     var approved: Boolean
 ) : BaseEntity(), HasAuthor {
     override val authorId: Any
