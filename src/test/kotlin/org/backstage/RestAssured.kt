@@ -16,7 +16,6 @@ fun Response.`do`(block: Response.() -> Unit): Response = this.apply { block() }
 fun Response.printResponse(): Response = this.apply { prettyPrint() }
 
 fun ValidatableResponse.isJson(): ValidatableResponse = this.contentType(ContentType.JSON)
-fun ValidatableResponse.statusCode(status: Status): ValidatableResponse = this.statusCode(status.statusCode)
 fun ValidatableResponse.statusCode(status: StatusType): ValidatableResponse = this.statusCode(status.statusCode)
 
 fun ValidatableResponse.shouldShowNotFound(): ValidatableResponse = this
