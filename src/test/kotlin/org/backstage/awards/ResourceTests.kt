@@ -34,7 +34,9 @@ class ResourceTests {
 
     @Test
     fun `listing the awards should return a valid response`() {
-        RestAssured.get("/award")
+        RestAssured
+            .get("/award")
+            
             .then()
             .isJson()
             .statusCode(OK)
