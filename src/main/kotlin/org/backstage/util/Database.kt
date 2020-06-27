@@ -42,7 +42,7 @@ abstract class BaseEntity {
 @Table(name = "revision_info")
 @RevisionEntity(RevisionInfoEntityListener::class)
 class RevisionInfoEntity(
-    @Column(name = "user_id", nullable = false, columnDefinition = "uuid")
+    @Column(name = "user_id", nullable = false)
     var userId: String
 ) : DefaultRevisionEntity()
 
