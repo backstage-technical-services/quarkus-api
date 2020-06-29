@@ -79,7 +79,7 @@ abstract class Policy<T>(private val identity: SecurityIdentity) {
      * access permissions.
      */
     protected fun authorise(fn: () -> Boolean) {
-        if (!identity.isSuperAdmin() && !fn()) {
+        if (!(identity.isSuperAdmin() || fn())) {
             deny()
         }
     }
@@ -90,7 +90,7 @@ abstract class Policy<T>(private val identity: SecurityIdentity) {
      * if no [entity] is provided.
      */
     protected fun authorise(entity: T?, fn: (entity: T) -> Boolean) {
-        if (!identity.isSuperAdmin() && (entity == null || !fn(entity))) {
+        if (!(identity.isSuperAdmin() || (entity != null && fn(entity)))) {
             deny()
         }
     }
