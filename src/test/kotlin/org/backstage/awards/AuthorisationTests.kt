@@ -43,15 +43,6 @@ class AuthorisationTests {
     }
 
     @Test
-    fun `Given a user who is an admin, listing the awards should be successful`() {
-        Mockito.`when`(identity.hasRole(Roles.ROLE_SUPER_ADMIN)).thenReturn(true)
-
-        shouldNotThrow<UnauthorizedException> {
-            service.list(AwardResponse.Full::class)
-        }
-    }
-
-    @Test
     fun `Given a user with no roles, creating an award should throw an exception`() {
         Mockito.`when`(identity.hasRole(Roles.ROLE_MEMBER)).thenReturn(false)
 
@@ -63,15 +54,6 @@ class AuthorisationTests {
     @Test
     fun `Given a user who is a member, creating an award should be successful`() {
         Mockito.`when`(identity.hasRole(Roles.ROLE_MEMBER)).thenReturn(true)
-
-        shouldNotThrow<UnauthorizedException> {
-            service.create(AwardFixtures.CREATE_REQUEST)
-        }
-    }
-
-    @Test
-    fun `Given a user who is an admin, creating an award should be successful`() {
-        Mockito.`when`(identity.hasRole(Roles.ROLE_SUPER_ADMIN)).thenReturn(true)
 
         shouldNotThrow<UnauthorizedException> {
             service.create(AwardFixtures.CREATE_REQUEST)
@@ -97,15 +79,6 @@ class AuthorisationTests {
     }
 
     @Test
-    fun `Given a user who is an admin, getting an award should be successful`() {
-        Mockito.`when`(identity.hasRole(Roles.ROLE_SUPER_ADMIN)).thenReturn(true)
-
-        shouldNotThrow<UnauthorizedException> {
-            service.get(UUID.randomUUID(), AwardResponse.Full::class)
-        }
-    }
-
-    @Test
     fun `Given a user with no roles, updating an award should throw an exception`() {
         Mockito.`when`(identity.hasRole(Roles.ROLE_MEMBER)).thenReturn(false)
 
@@ -124,7 +97,16 @@ class AuthorisationTests {
     }
 
     @Test
-    fun `Given a user who is an admin, updating an award should be successful`() {
+    fun `Given a user who is a committee member, updating an award should be successful`() {
+        Mockito.`when`(identity.hasRole(Roles.ROLE_COMMITTEE)).thenReturn(true)
+
+        shouldNotThrow<UnauthorizedException> {
+            service.update(UUID.randomUUID(), AwardFixtures.UPDATE_REQUEST)
+        }
+    }
+
+    @Test
+    fun `Given a user who is a super admin, updating an award should be successful`() {
         Mockito.`when`(identity.hasRole(Roles.ROLE_SUPER_ADMIN)).thenReturn(true)
 
         shouldNotThrow<UnauthorizedException> {
@@ -151,7 +133,16 @@ class AuthorisationTests {
     }
 
     @Test
-    fun `Given a user who is an admin, approving an award should be successful`() {
+    fun `Given a user who is a committee member, approving an award should be successful`() {
+        Mockito.`when`(identity.hasRole(Roles.ROLE_COMMITTEE)).thenReturn(true)
+
+        shouldNotThrow<UnauthorizedException> {
+            service.approve(UUID.randomUUID())
+        }
+    }
+
+    @Test
+    fun `Given a user who is a super admin, approving an award should be successful`() {
         Mockito.`when`(identity.hasRole(Roles.ROLE_SUPER_ADMIN)).thenReturn(true)
 
         shouldNotThrow<UnauthorizedException> {
@@ -178,7 +169,16 @@ class AuthorisationTests {
     }
 
     @Test
-    fun `Given a user who is an admin, unapproving an award should be successful`() {
+    fun `Given a user who is a committee member, unapproving an award should be successful`() {
+        Mockito.`when`(identity.hasRole(Roles.ROLE_COMMITTEE)).thenReturn(true)
+
+        shouldNotThrow<UnauthorizedException> {
+            service.unapprove(UUID.randomUUID())
+        }
+    }
+
+    @Test
+    fun `Given a user who is a super admin, unapproving an award should be successful`() {
         Mockito.`when`(identity.hasRole(Roles.ROLE_SUPER_ADMIN)).thenReturn(true)
 
         shouldNotThrow<UnauthorizedException> {
@@ -205,7 +205,16 @@ class AuthorisationTests {
     }
 
     @Test
-    fun `Given a user who is an admin, deleting an award should be successful`() {
+    fun `Given a user who is a committee member, deleting an award should be successful`() {
+        Mockito.`when`(identity.hasRole(Roles.ROLE_COMMITTEE)).thenReturn(true)
+
+        shouldNotThrow<UnauthorizedException> {
+            service.delete(UUID.randomUUID())
+        }
+    }
+
+    @Test
+    fun `Given a user who is a super admin, deleting an award should be successful`() {
         Mockito.`when`(identity.hasRole(Roles.ROLE_SUPER_ADMIN)).thenReturn(true)
 
         shouldNotThrow<UnauthorizedException> {

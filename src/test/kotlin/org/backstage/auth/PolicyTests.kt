@@ -17,7 +17,6 @@ import io.quarkus.test.junit.QuarkusTest
 import org.backstage.AuthHelpers
 import org.junit.jupiter.api.Test
 import java.util.*
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 import javax.inject.Singleton
 
