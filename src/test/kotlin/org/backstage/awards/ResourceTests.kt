@@ -38,7 +38,7 @@ class ResourceTests {
             .get("/award")
 
             .then()
-            .isJson()
+            .shouldBeJson()
             .statusCode(OK)
             .body("size()", greaterThan(0))
     }
@@ -48,7 +48,7 @@ class ResourceTests {
     fun `creating an award should return a 204 status code and the resource ID`() {
         RestAssured
             .given()
-            .isJson(AwardFixtures.CREATE_REQUEST_JSON)
+            .asJson(AwardFixtures.CREATE_REQUEST_JSON)
 
             .`when`()
             .post("/award")
@@ -70,7 +70,7 @@ class ResourceTests {
             .get("/award/$awardId")
 
             .then()
-            .isJson()
+            .shouldBeJson()
             .statusCode(OK)
             .body("id", equalTo(awardId))
     }
@@ -98,7 +98,7 @@ class ResourceTests {
     fun `updating an existing award should return a 204 status code`() {
         RestAssured
             .given()
-            .isJson(AwardFixtures.UPDATE_REQUEST_JSON)
+            .asJson(AwardFixtures.UPDATE_REQUEST_JSON)
 
             .`when`()
             .patch("/award/$awardId")
@@ -111,7 +111,7 @@ class ResourceTests {
     fun `updating a non-existent award should return a 404 response`() {
         RestAssured
             .given()
-            .isJson(AwardFixtures.UPDATE_REQUEST_JSON)
+            .asJson(AwardFixtures.UPDATE_REQUEST_JSON)
 
             .`when`()
             .patch("/award/${AwardFixtures.NON_EXISTENT_ID}")
@@ -124,7 +124,7 @@ class ResourceTests {
     fun `updating the details of an award using an invalid UUID should a 400 response`() {
         RestAssured
             .given()
-            .isJson(AwardFixtures.UPDATE_REQUEST_JSON)
+            .asJson(AwardFixtures.UPDATE_REQUEST_JSON)
 
             .`when`()
             .patch("/award/INVALID")
