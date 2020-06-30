@@ -51,10 +51,12 @@ class ServiceTests {
 
     @Test
     @Order(1)
-    fun `listing the awards, should return all the existing awards`() {
+    fun `listing the awards, should return all the existing awards in the correct order`() {
         val awards = service.list(AwardResponse.Full::class)
 
-        awards.shouldHaveSize(1)
+        awards.shouldHaveSize(2)
+        awards[0].name shouldBe "Another Existing Award"
+        awards[1].name shouldBe "Existing Award"
     }
 
     @Test

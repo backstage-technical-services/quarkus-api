@@ -1,5 +1,6 @@
 package org.backstage.awards
 
+import io.quarkus.panache.common.Sort
 import io.quarkus.security.identity.SecurityIdentity
 import org.backstage.auth.Policy
 import org.backstage.util.CrudOperations
@@ -35,7 +36,7 @@ class RepositoryAwardService(
 
     override fun <T : Any> list(responseClass: KClass<T>): List<T> = policy.authoriseAndDo(CrudOperations.LIST) {
         repository
-            .listAll()
+            .listAll(Sort.ascending("name"))
             .map { award -> award.toClass(responseClass) }
             .toList()
     }
