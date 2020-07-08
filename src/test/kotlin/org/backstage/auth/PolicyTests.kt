@@ -14,10 +14,11 @@ import io.quarkus.security.UnauthorizedException
 import io.quarkus.security.identity.SecurityIdentity
 import io.quarkus.security.runtime.QuarkusPrincipal
 import io.quarkus.test.junit.QuarkusTest
+import org.backstage.AuthHelpers
 import org.junit.jupiter.api.Test
 import java.util.*
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private val USER_CORRECT = UUID.fromString("566e8ad1-f5e3-4062-93e4-541c961f0c98")
 private val USER_INCORRECT = UUID.fromString("891832e6-ee0b-4085-870b-0cbba0a62671")
@@ -35,15 +36,10 @@ class PolicyInjectionTests {
 
 class SingletonPolicyTests : FunSpec() {
     init {
-        val principle = mock<OidcJwtCallerPrincipal> {
-            on { subject } doReturn USER_CORRECT.toString()
-        }
-        val user = mock<SecurityIdentity> {
-            on { principal } doReturn principle
-        }
+        val user = AuthHelpers.createMockedIdentity(USER_CORRECT.toString())
 
         context("a singleton policy and an entity") {
-            val policy = object : Policy<ExampleEntity>() {
+            val policy = object : Policy<ExampleEntity>(user) {
                 override fun authorise(action: Any, entity: ExampleEntity?) = when (action) {
                     "allow" -> allow()
                     "deny" -> deny()
@@ -130,7 +126,7 @@ class UserIdTests : FunSpec() {
             }
 
             test("getting the user ID should return the correct value") {
-                user.getUserId() shouldBe USER_CORRECT.toString()
+                user.getUserIdOrNull() shouldBe USER_CORRECT.toString()
             }
         }
 
@@ -140,14 +136,14 @@ class UserIdTests : FunSpec() {
             }
 
             test("getting the user ID should return null") {
-                user.getUserId().shouldBeNull()
+                user.getUserIdOrNull().shouldBeNull()
             }
         }
     }
 }
 
-@ApplicationScoped
-class ExampleInjectedPolicy : Policy<ExampleEntity>() {
+@Singleton
+class ExampleInjectedPolicy(identity: SecurityIdentity) : Policy<ExampleEntity>(identity) {
     override fun authorise(action: Any, entity: ExampleEntity?) = allow()
 }
 

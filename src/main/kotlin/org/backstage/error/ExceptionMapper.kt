@@ -156,8 +156,8 @@ interface PersistenceExceptionHandler {
     }
 }
 
-fun Logger.recordError(exception: Throwable) = this.error(exception.message, exception)
-fun Logger.recordWarning(exception: Throwable) = this.warn(exception.message, exception)
+fun Logger.recordError(exception: Throwable) = this.error(exception.message)
+fun Logger.recordWarning(exception: Throwable) = this.warn(exception.message)
 
 fun Throwable.buildGeneralErrorResponse(status: StatusType): Response =
     Response.status(status)

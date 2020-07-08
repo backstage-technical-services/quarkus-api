@@ -9,8 +9,10 @@ infix fun Response.Status.exceptionWithMessage(message: String) = HttpException(
 
 interface ExceptionFactory {
     companion object {
-        fun couldNotAssignId(entity: Any) =
-            INTERNAL_SERVER_ERROR exceptionWithMessage "Failed to assign ID to ${entity::class}"
+        fun couldNotAssignId(entity: Any? = null) = when (entity) {
+            null -> INTERNAL_SERVER_ERROR exceptionWithMessage "Failed to assign ID to entity"
+            else -> INTERNAL_SERVER_ERROR exceptionWithMessage "Failed to assign ID to ${entity::class}"
+        }
 
         fun entityMissingId(entity: Any) =
             INTERNAL_SERVER_ERROR exceptionWithMessage "Entity ${entity::class} is missing its ID"

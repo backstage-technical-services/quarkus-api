@@ -3,6 +3,9 @@ package org.backstage.auth
 import io.quarkus.oidc.runtime.OidcJwtCallerPrincipal
 import io.quarkus.security.UnauthorizedException
 import io.quarkus.security.identity.SecurityIdentity
+import org.backstage.auth.Roles.ROLE_COMMITTEE
+import org.backstage.auth.Roles.ROLE_MEMBER
+import org.backstage.auth.Roles.ROLE_SUPER_ADMIN
 
 interface HasAuthor {
     val authorId: Any
@@ -45,7 +48,7 @@ interface HasAuthor {
  * }
  * ```
  */
-abstract class Policy<T> {
+abstract class Policy<T>(private val identity: SecurityIdentity) {
     protected fun allow() = Unit
 
     protected fun deny() {
@@ -60,12 +63,23 @@ abstract class Policy<T> {
     abstract fun authorise(action: Any, entity: T? = null)
 
     /**
+     * Determines whether to authorise a given [action], which may depend on a given [entity], and execute [onAuthorised]
+     * if it is. This method should throw an [UnauthorizedException] if the action is not allowed. If the authorisation
+     * needs to inspect the current user it can use an injected [SecurityIdentity].
+     */
+    inline fun <reified U> authoriseAndDo(action: Any, entity: T? = null, onAuthorised: () -> U): U {
+        authorise(action, entity)
+
+        return onAuthorised()
+    }
+
+    /**
      * Determines whether the current user is authorised based on the result of a given [fn] which takes no arguments.
      * This is useful for determining access for actions with no entity to check, or where the entity does not dictate
      * access permissions.
      */
     protected fun authorise(fn: () -> Boolean) {
-        if (!fn()) {
+        if (!(identity.isAdmin() || fn())) {
             deny()
         }
     }
@@ -76,7 +90,7 @@ abstract class Policy<T> {
      * if no [entity] is provided.
      */
     protected fun authorise(entity: T?, fn: (entity: T) -> Boolean) {
-        if (entity == null || !fn(entity)) {
+        if (!(identity.isAdmin() || (entity != null && fn(entity)))) {
             deny()
         }
     }
@@ -87,7 +101,7 @@ abstract class Policy<T> {
      */
     fun SecurityIdentity.isAuthor(entity: T?, fn: (entity: T) -> Any) = when (entity) {
         null -> false
-        else -> fn(entity).toString() == this.getUserId()
+        else -> fn(entity).toString() == this.getUserIdOrNull()
     }
 
     /**
@@ -96,20 +110,17 @@ abstract class Policy<T> {
      */
     fun SecurityIdentity.isAuthor(entity: HasAuthor?) = when (entity) {
         null -> false
-        else -> entity.authorId.toString() == this.getUserId()
+        else -> entity.authorId.toString() == this.getUserIdOrNull()
     }
 
     fun SecurityIdentity.isMember() = this.hasRole(ROLE_MEMBER)
-    fun SecurityIdentity.isAdmin() = this.hasRole(ROLE_COMMITTEE) || this.hasRole(ROLE_ADMIN)
-
-    companion object {
-        private const val ROLE_MEMBER = "ROLE_MEMBER"
-        private const val ROLE_COMMITTEE = "ROLE_COMMITTEE"
-        private const val ROLE_ADMIN = "ROLE_ADMIN"
-    }
+    fun SecurityIdentity.isAdmin() = this.hasRole(ROLE_COMMITTEE) || this.hasRole(ROLE_SUPER_ADMIN)
 }
 
-fun SecurityIdentity.getUserId(): String? = when (val principal = this.principal) {
+fun SecurityIdentity.getUserId(): String = this.getUserIdOrNull()
+    ?: throw IllegalStateException("Could not determine ID of user $this")
+
+fun SecurityIdentity.getUserIdOrNull(): String? = when (val principal = this.principal) {
     is OidcJwtCallerPrincipal -> principal.subject
     else -> null
 }

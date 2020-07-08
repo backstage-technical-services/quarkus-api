@@ -12,6 +12,10 @@ quarkus:
     driver: org.postgresql.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  index-dependency:
+    envers:
+      group-id: org.hibernate
+      artifact-id: hibernate-envers
   oidc:
     auth-server-url: https://keycloak.bts-crew.com/auth/realms/${KEYCLOAK_REALM}
     client-id: ${KEYCLOAK_CLIENT_ID}
@@ -51,6 +55,9 @@ quarkus:
       driver: org.h2.Driver
       username: sa
       password:
+    hibernate-orm:
+      database:
+        generation: create
     oidc:
       enabled: false
       auth-server-url: http://localhost:8080

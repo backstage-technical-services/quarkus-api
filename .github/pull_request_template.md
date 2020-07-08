@@ -9,13 +9,14 @@ Include a link to the original ticket.
 **General**
 
 * [ ] Readme updated (including additional environment variables)
-* [ ] Endpoint access configured in Keycloak
+* [ ] Additional documentation written (if applicable)
 
 **Testing**
 
 * [ ] Good coverage of DTO serialisation/de-serialisation tests
 * [ ] Good coverage of unit tests
 * [ ] Good coverage of integration tests
+* [ ] Good coverage of resource tests
 
 **Local Development**
 
