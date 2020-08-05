@@ -8,14 +8,16 @@
 [![chat](https://img.shields.io/badge/chat-on%20slack-brightgreen)](https://bts-website.slack.com)
 [![license](https://img.shields.io/badge/license-Apache%20v2-blue)](./LICENSE.txt)
 
-
 ## Pre-requisites
 
 > Make sure you are familiar with the [Contribution
 > Guide][contribution-guide] and the main [development
 > readme][development-readme].
 
-* Install GraalVM 19.3.1 (`19.3.1.r11-grl`) using SDKMAN
+* Make sure you have IntelliJ IDEA with the following plugins installed:
+  * `EnvFile` by Borys Pierov
+* Install GraalVM 19.3.1 (`19.3.1.r11-grl`) using SDKMAN and [add this
+  as a JDK][intellij-jdk].
 
   > **Do not** set this as your default, as it changes the path for
   > Node.js which will make the SPA very slow to build and run.
@@ -23,7 +25,8 @@
 * Make sure the [database and SMTP server][aux-services] are running
 * Copy the `.env.example` file to `.env` and fill in the missing values
 
-  > You may need to ask in [Slack][slack] for some of the sensitive values
+  > You may need to ask in [Slack][slack] for some of the sensitive
+  > values
 
 ## Configure IntelliJ IDEA
 
@@ -56,3 +59,5 @@
 [development-readme]: https://github.com/backstage-technical-services/website-development/blob/master/readme.md
 [aux-services]: https://github.com/backstage-technical-services/website-development/blob/master/readme.md#running-the-auxiliary-services
 [slack]: https://bts-website.slack.com
+[intellij-jdk]: https://www.jetbrains.com/help/idea/sdk.html#change-project-sdk
+
