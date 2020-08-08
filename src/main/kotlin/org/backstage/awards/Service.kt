@@ -3,6 +3,8 @@ package org.backstage.awards
 import io.quarkus.panache.common.Sort
 import io.quarkus.security.identity.SecurityIdentity
 import org.backstage.auth.Policy
+import org.backstage.auth.isAdmin
+import org.backstage.auth.isMember
 import org.backstage.util.CrudOperations
 import org.backstage.util.SimpleCrudService
 import org.backstage.util.findByIdOrThrow

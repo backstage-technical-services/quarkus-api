@@ -112,10 +112,10 @@ abstract class Policy<T>(private val identity: SecurityIdentity) {
         null -> false
         else -> entity.authorId.toString() == this.getUserIdOrNull()
     }
-
-    fun SecurityIdentity.isMember() = this.hasRole(ROLE_MEMBER)
-    fun SecurityIdentity.isAdmin() = this.hasRole(ROLE_COMMITTEE) || this.hasRole(ROLE_SUPER_ADMIN)
 }
+
+fun SecurityIdentity.isMember() = this.hasRole(ROLE_MEMBER)
+fun SecurityIdentity.isAdmin() = this.hasRole(ROLE_COMMITTEE) || this.hasRole(ROLE_SUPER_ADMIN)
 
 fun SecurityIdentity.getUserId(): String = this.getUserIdOrNull()
     ?: throw IllegalStateException("Could not determine ID of user $this")
