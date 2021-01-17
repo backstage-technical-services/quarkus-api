@@ -16,11 +16,22 @@
 
 * Make sure you have IntelliJ IDEA with the following plugins installed:
   * `EnvFile` by Borys Pierov
-* Install GraalVM 19.3.1 (`19.3.1.r11-grl`) using SDKMAN and [add this
-  as a JDK][intellij-jdk].
+* Install GraalVM 19.3.1 (`19.3.1.r11-grl`) and [add this as a
+  JDK][intellij-jdk].
 
-  > **Do not** set this as your default, as it changes the path for
-  > Node.js which will make the SPA very slow to build and run.
+  > It is recommended that you install SDKMAN to make it easier to
+  > install and manage Java SDKs. Follow [these
+  > instructions][install-sdkman] to install it. You can then install an
+  > SDK with the following command:
+  >
+  > ```sh
+  > $ sdk install java <version>
+  > ```
+  >
+  > This will install the SDK to `~/.sdkman/candidates/java`.
+  >
+  > You can search for available versions using `sdk search java` and
+  > set your default java version using `sdk default java <version>`.
 
 * Make sure the [database and SMTP server][aux-services] are running
 * Copy the `.env.example` file to `.env` and fill in the missing values
@@ -57,6 +68,7 @@
 
 [contribution-guide]: https://github.com/backstage-technical-services/hub/blob/master/Contributing.md
 [development-readme]: https://github.com/backstage-technical-services/website-development/blob/master/readme.md
+[install-sdkman]: https://sdkman.io/install
 [aux-services]: https://github.com/backstage-technical-services/website-development/blob/master/readme.md#running-the-auxiliary-services
 [slack]: https://bts-website.slack.com
 [intellij-jdk]: https://www.jetbrains.com/help/idea/sdk.html#change-project-sdk
