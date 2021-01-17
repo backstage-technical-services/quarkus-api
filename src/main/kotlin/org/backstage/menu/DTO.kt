@@ -29,13 +29,13 @@ sealed class MenuItem {
     @JsonInclude(NON_NULL)
     data class Main(
         @JsonProperty("id")
-        val id: UUID,
+        val id: UUID = UUID.randomUUID(),
 
         @JsonProperty("text")
         val text: String,
 
         @JsonProperty("link")
-        val link: MenuLink,
+        val link: MenuLink = MenuLink(href = "#"),
 
         @JsonProperty("children")
         val children: List<Main>? = null
@@ -44,7 +44,7 @@ sealed class MenuItem {
     @JsonInclude(NON_NULL)
     data class Admin(
         @JsonProperty("id")
-        val id: UUID,
+        val id: UUID = UUID.randomUUID(),
 
         @JsonProperty("icon")
         val icon: String,
@@ -53,7 +53,7 @@ sealed class MenuItem {
         val text: String,
 
         @JsonProperty("link")
-        val link: MenuLink,
+        val link: MenuLink = MenuLink(href = "#"),
 
         @JsonProperty("items")
         val items: List<Admin>? = null
