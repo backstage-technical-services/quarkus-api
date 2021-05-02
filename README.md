@@ -66,10 +66,10 @@
   block runs the execution will pause, allowing you to inspect variables
   and the stack to see what's going on
 
-[contribution-guide]: https://github.com/backstage-technical-services/hub/blob/master/Contributing.md
-[development-readme]: https://github.com/backstage-technical-services/website-development/blob/master/readme.md
+[contribution-guide]: https://github.com/backstage-technical-services/hub/blob/main/Contributing.md
+[development-readme]: https://github.com/backstage-technical-services/website-development/blob/main/readme.md
 [install-sdkman]: https://sdkman.io/install
-[aux-services]: https://github.com/backstage-technical-services/website-development/blob/master/readme.md#running-the-auxiliary-services
+[aux-services]: https://github.com/backstage-technical-services/website-development/blob/main/readme.md#running-the-auxiliary-services
 [slack]: https://bts-website.slack.com
 [intellij-jdk]: https://www.jetbrains.com/help/idea/sdk.html#change-project-sdk
 
